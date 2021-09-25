@@ -4,19 +4,26 @@ import 'dart:mirrors';
 
 import 'package:d_frame_art/src/utils/annotations/route.dart';
 
+/// This class controls the mains functions server
 class Application {
   HttpServer server;
 
+  /// Init server
   void run() async {
     var server = await HttpServer.bind('127.0.0.1', 8080);
 
     this.server = server;
   }
 
+  /// Return a listener request
   HttpServer requestsToServer(HttpServer server) {
     return server;
   }
 
+  /// Add a controller to listener request
+  /// [Controller] Controller that you want add to listener request
+  /// [url] path controller
+  /// [path] user request url
   dynamic addController<T>(T Controller, [String url, String path]) {
     var controller = reflect(Controller);
 
@@ -32,4 +39,6 @@ class Application {
 
     return null;
   }
+
+  void method() {}
 }
