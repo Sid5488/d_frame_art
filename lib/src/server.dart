@@ -1,5 +1,8 @@
-import 'dart:convert';
+// import 'dart:convert';
 import 'dart:io';
+import 'dart:mirrors';
+
+import 'package:d_frame_art/app/resources/hello_world_resouce.dart';
 
 Future<void> main(List<String> args) async {
   await Application().run();
@@ -7,26 +10,21 @@ Future<void> main(List<String> args) async {
 
 class Application {
   Future<void> run() async {
-    var server = await HttpServer.bind('127.0.0.1', 3002);
+    var server = await HttpServer.bind('127.0.0.1', 8080);
 
     requestsToServer(server);
   }
 
-  void requestsToServer(HttpServer request) {
-    request.listen((HttpRequest req) {
-      requestMethod(req);
-
-      req.response.write(jsonEncode({
-        'message': 'Hello World',
-        'method': req.method.toString(),
-        'uri': req.uri.toString()
-      }));
-      req.response.close();
+  void requestsToServer(HttpServer server) {
+    server.listen((HttpRequest request) {
+      addController<HelloWorldResource>(HelloWorldResource());
     });
   }
 
-  void requestMethod(HttpRequest request) {
-    print(request.method);
-    print(request.uri);
+  dynamic addController<T>(T Controller) {
+    var controller = reflect(Controller);
+    var values = controller.invoke(Symbol('sayHello'), []);
+
+    return values.reflectee;
   }
 }
