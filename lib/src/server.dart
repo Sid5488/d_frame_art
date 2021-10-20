@@ -46,7 +46,7 @@ class Application {
     if (path == completedUrl &&
         url == (route.reflectee as Route).url &&
         reqMethod.method == method) {
-      var values = controller.invoke(Symbol('sayHello'), []);
+      var values = controller.invoke(Symbol(reqMethod.nameMethod), []);
       return jsonEncode(values.reflectee);
     }
 

@@ -7,7 +7,7 @@ import '../models/hello_models.dart';
 class HelloWorldResource {
   // Writing your methods
 
-  @RequestMethod('GET', '/say-hello')
+  @RequestMethod('GET', '/say-hello', 'sayHello')
   dynamic sayHello() {
     var hello = HelloModel();
 

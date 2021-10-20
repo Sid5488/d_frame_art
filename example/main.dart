@@ -17,7 +17,7 @@ void main() async {
   server.listen((HttpRequest request) {
     var hello = app.addController<HelloWorldResource>(
       HelloWorldResource(),
-      RequestMethod('GET', '/say-hello'),
+      RequestMethod('GET', '/say-hello', 'sayHello'),
       '/hello-world',
       request.uri.toString(),
       request.method.toString(),
