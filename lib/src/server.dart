@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:mirrors';
 
-import 'package:d_frame_art/src/utils/annotations/get_method.dart';
+import 'package:d_frame_art/src/utils/annotations/request_method.dart';
 import 'package:d_frame_art/src/utils/annotations/route.dart';
 
 /// This class controls the mains functions server
@@ -29,20 +29,23 @@ class Application {
   /// [url] path controller
   /// [path] user request url
   dynamic addController<T>(
-    T Controller, [
+    T Controller,
+    RequestMethod reqMethod, [
     String url,
     String path,
-    String methodParh,
-    String reqMethod,
+    String method,
   ]) {
     var controller = reflect(Controller);
+    var completedUrl = url + reqMethod.methodPath;
 
     var route = controller.type.metadata.firstWhere(
       (meta) => meta.reflectee is Route,
       orElse: () => null,
     );
 
-    if (path == url && url == (route.reflectee as Route).url) {
+    if (path == completedUrl &&
+        url == (route.reflectee as Route).url &&
+        reqMethod.method == method) {
       var values = controller.invoke(Symbol('sayHello'), []);
       return jsonEncode(values.reflectee);
     }

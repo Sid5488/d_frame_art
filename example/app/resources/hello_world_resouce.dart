@@ -1,4 +1,4 @@
-import 'package:d_frame_art/src/utils/annotations/get_method.dart';
+import 'package:d_frame_art/src/utils/annotations/request_method.dart';
 import 'package:d_frame_art/src/utils/annotations/route.dart';
 
 import '../models/hello_models.dart';
@@ -7,7 +7,7 @@ import '../models/hello_models.dart';
 class HelloWorldResource {
   // Writing your methods
 
-  @GetMethod('/say-hello')
+  @RequestMethod('GET', '/say-hello')
   dynamic sayHello() {
     var hello = HelloModel();
 
