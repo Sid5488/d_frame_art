@@ -1,8 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:d_frame_art/src/utils/annotations/request_method.dart';
 
-import 'app/resources/hello_world_resouce.dart';
+import 'app/resources/messages_resouce.dart';
 
 import 'package:d_frame_art/main.dart';
 
@@ -11,19 +12,24 @@ void main() async {
   await app.run();
 
   var server = app.requestsToServer(app.server);
-
-  print('Server started');
-
   server.listen((HttpRequest request) {
-    var hello = app.addController<HelloWorldResource>(
-      HelloWorldResource(),
-      RequestMethod('GET', '/say-hello', 'sayHello'),
-      '/hello-world',
+    var response;
+
+    response = app.addController<MessagesResource>(
+      MessagesResource(),
+      RequestMethod('GET', '/first-message', 'getFistMessage'),
+      '/messages',
       request.uri.toString(),
       request.method.toString(),
     );
 
-    request.response.write(hello);
+    Future<String> content = utf8.decodeStream(request);
+
+    content.then((dynamic res) {
+      print(jsonEncode(res));
+    });
+
+    request.response.write(response);
     request.response.close();
   });
 }
