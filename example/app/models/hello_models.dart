@@ -1,0 +1,3 @@
+class HelloModel {
+  String message;
+}

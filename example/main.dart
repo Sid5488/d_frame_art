@@ -10,11 +10,14 @@ void main() async {
 
   var server = app.requestsToServer(app.server);
 
+  print('Server started');
+
   server.listen((HttpRequest request) {
     var hello = app.addController<HelloWorldResource>(
       HelloWorldResource(),
       '/hello-world',
       request.uri.toString(),
+      request.method.toString(),
     );
 
     request.response.write(hello);
