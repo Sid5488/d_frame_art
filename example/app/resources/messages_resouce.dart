@@ -1,6 +1,5 @@
-import 'package:d_frame_art/src/utils/annotations/request_method.dart';
-import 'package:d_frame_art/src/utils/annotations/route.dart';
-
+import '../../../lib/src/utils/annotations/Route.dart';
+import '../../../lib/src/utils/annotations/request_method.dart';
 import '../models/messages_model.dart';
 import '../services/messages_services.dart';
 
@@ -16,6 +15,6 @@ class MessagesResource {
     };
   }
 
-  @RequestMethod('POST', '/create', 'create')
-  Map<String, String> create() {}
+  // @RequestMethod('POST', '/create', 'create')
+  // Map<String, String> create() {}
 }

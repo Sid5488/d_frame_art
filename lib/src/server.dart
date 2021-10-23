@@ -2,15 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:mirrors';
 
-import 'package:d_frame_art/src/utils/annotations/request_method.dart';
-import 'package:d_frame_art/src/utils/annotations/route.dart';
+import 'utils/annotations/Route.dart';
+import 'utils/annotations/request_method.dart';
 
 /// This class controls the mains functions server
 class Application {
-  HttpServer server;
+  HttpServer? server;
 
   /// Init server
-  void run([String localserver, int port]) async {
+  dynamic run([String? localserver, int? port]) async {
     var server = await HttpServer.bind(
       localserver == null ? '127.0.0.1' : localserver,
       port == null ? 8080 : port,
@@ -20,7 +20,7 @@ class Application {
   }
 
   /// Return a listener request
-  HttpServer requestsToServer(HttpServer server) {
+  dynamic requestsToServer(HttpServer? server) {
     return server;
   }
 
@@ -31,17 +31,24 @@ class Application {
   dynamic addController<T>(
     T Controller,
     RequestMethod reqMethod, [
-    String url,
-    String path,
-    String method,
+    String? url,
+    dynamic request,
   ]) {
     var controller = reflect(Controller);
-    var completedUrl = url + reqMethod.methodPath;
+    var completedUrl = url.toString() + reqMethod.methodPath;
+    String path = request.uri.toString();
+    String method = request.method.toString();
 
     var route = controller.type.metadata.firstWhere(
       (meta) => meta.reflectee is Route,
-      orElse: () => null,
+      orElse: () => null as InstanceMirror,
     );
+
+    Future<String> content = utf8.decodeStream(request);
+
+    content.then((dynamic res) {
+      print(jsonEncode(res));
+    });
 
     if (path == completedUrl &&
         url == (route.reflectee as Route).url &&
